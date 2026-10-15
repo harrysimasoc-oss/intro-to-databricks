@@ -1,0 +1,432 @@
+{
+  "datasets": [
+    {
+      "name": "bakehouse_reviews",
+      "displayName": "Bakehouse Reviews",
+      "query": "SELECT review, franchiseID, review_date FROM samples.bakehouse.media_customer_reviews"
+    },
+    {
+      "name": "bakehouse_customers",
+      "displayName": "Bakehouse Customers",
+      "query": "SELECT continent, country, city, state, gender FROM samples.bakehouse.sales_customers"
+    },
+    {
+      "name": "bakehouse_franchises",
+      "displayName": "Bakehouse Franchises",
+      "query": "SELECT franchiseID, name AS franchise_name, city, district, country, size FROM samples.bakehouse.sales_franchises"
+    }
+  ],
+  "pages": [
+    {
+      "name": "e74d97ea",
+      "displayName": "Untitled page",
+      "layout": [
+        {
+          "widget": {
+            "name": "total_customers",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "count",
+                      "expression": "COUNT(*)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "datasetName": "bakehouse_customers"
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Total Customers",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "count",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "total_franchises",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "count",
+                      "expression": "COUNT(*)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "datasetName": "bakehouse_franchises"
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Total Franchises",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "count",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 4,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "total_reviews",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "count",
+                      "expression": "COUNT(*)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "datasetName": "bakehouse_reviews"
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Total Reviews",
+                  "fields": []
+                }
+              },
+              "version": 2,
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "count",
+                  "rowNumber": 0
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 8,
+            "y": 0,
+            "width": 4,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "customers_by_continent",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "continent",
+                      "expression": "continent"
+                    },
+                    {
+                      "name": "count",
+                      "expression": "COUNT(*)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "datasetName": "bakehouse_customers"
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Customers by Continent",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "continent",
+                  "displayName": "continent",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "count",
+                  "displayName": "customer_count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "continent",
+                  "displayName": "continent",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "franchises_by_size",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "count",
+                      "expression": "COUNT(*)"
+                    },
+                    {
+                      "name": "size",
+                      "expression": "size"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "datasetName": "bakehouse_franchises"
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Franchises by Size",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "count",
+                  "scale": {
+                    "type": "quantitative"
+                  },
+                  "displayName": "franchise_count"
+                },
+                "color": {
+                  "fieldName": "size",
+                  "displayName": "size",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "reviews_over_time",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "monthly_review_date",
+                      "expression": "DATE_TRUNC('MONTH', review_date)"
+                    },
+                    {
+                      "name": "count",
+                      "expression": "COUNT(*)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "datasetName": "bakehouse_reviews"
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": {
+                  "value": "Reviews Over Time",
+                  "fields": []
+                }
+              },
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "monthly_review_date",
+                  "displayName": "Month",
+                  "scale": {
+                    "type": "temporal"
+                  }
+                },
+                "y": {
+                  "fieldName": "count",
+                  "displayName": "review_count",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 7,
+            "width": 12,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "franchise_table",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "fields": [
+                    {
+                      "name": "franchise_name",
+                      "expression": "franchise_name"
+                    },
+                    {
+                      "name": "city",
+                      "expression": "city"
+                    },
+                    {
+                      "name": "district",
+                      "expression": "district"
+                    },
+                    {
+                      "name": "country",
+                      "expression": "country"
+                    },
+                    {
+                      "name": "size",
+                      "expression": "size"
+                    }
+                  ],
+                  "disaggregated": true,
+                  "datasetName": "bakehouse_franchises"
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Franchise Details"
+              },
+              "version": 2,
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "franchise_name"
+                  },
+                  {
+                    "fieldName": "city"
+                  },
+                  {
+                    "fieldName": "district"
+                  },
+                  {
+                    "fieldName": "country"
+                  },
+                  {
+                    "fieldName": "size"
+                  }
+                ]
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 12,
+            "width": 12,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}
