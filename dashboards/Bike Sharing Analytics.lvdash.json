@@ -1,57 +1,109 @@
 {
   "datasets": [
     {
-      "name": "bakehouse_reviews",
-      "displayName": "Bakehouse Reviews",
-      "query": "SELECT review, franchiseID, review_date FROM samples.bakehouse.media_customer_reviews"
-    },
-    {
       "name": "bakehouse_customers",
       "displayName": "Bakehouse Customers",
-      "query": "SELECT continent, country, city, state, gender FROM samples.bakehouse.sales_customers"
+      "queryLines": [
+        "SELECT continent, country, city, state, gender FROM samples.bakehouse.sales_customers"
+      ]
     },
     {
       "name": "bakehouse_franchises",
       "displayName": "Bakehouse Franchises",
-      "query": "SELECT franchiseID, name AS franchise_name, city, district, country, size FROM samples.bakehouse.sales_franchises"
+      "queryLines": [
+        "SELECT franchiseID, name AS franchise_name, city, district, country, size FROM samples.bakehouse.sales_franchises"
+      ]
+    },
+    {
+      "name": "bike_bikes",
+      "displayName": "Bike Daily Metrics",
+      "queryLines": [
+        "SELECT\n",
+        "  ride_date,\n",
+        "  bike_id,\n",
+        "  total_rides,\n",
+        "  total_revenue,\n",
+        "  start_station_id,\n",
+        "  end_station_id,\n",
+        "  requires_maintenance\n",
+        "FROM\n",
+        "  bikes"
+      ],
+      "catalog": "main",
+      "schema": "dbdemos_pipeline_bike"
+    },
+    {
+      "name": "bike_rides",
+      "displayName": "Bike Rides",
+      "queryLines": [
+        "SELECT\n",
+        "  ride_date,\n",
+        "  ride_id,\n",
+        "  start_time,\n",
+        "  end_time,\n",
+        "  start_station_id,\n",
+        "  end_station_id,\n",
+        "  bike_id,\n",
+        "  user_type,\n",
+        "  ride_revenue\n",
+        "FROM\n",
+        "  rides"
+      ],
+      "catalog": "main",
+      "schema": "dbdemos_pipeline_bike"
+    },
+    {
+      "name": "bike_stations",
+      "displayName": "Station Daily Metrics",
+      "queryLines": [
+        "SELECT\n",
+        "  ride_date,\n",
+        "  station_id,\n",
+        "  total_rides_as_origin,\n",
+        "  total_rides_as_destination,\n",
+        "  end_of_day_inventory,\n",
+        "  total_revenue_as_origin,\n",
+        "  total_revenue_as_destination\n",
+        "FROM\n",
+        "  stations"
+      ],
+      "catalog": "main",
+      "schema": "dbdemos_pipeline_bike"
     }
   ],
   "pages": [
     {
       "name": "e74d97ea",
-      "displayName": "Untitled page",
+      "displayName": "Main",
       "layout": [
         {
           "widget": {
-            "name": "total_customers",
+            "name": "total_rides",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
+                  "datasetName": "bike_rides",
                   "fields": [
                     {
-                      "name": "count",
-                      "expression": "COUNT(*)"
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
                     }
                   ],
-                  "disaggregated": false,
-                  "datasetName": "bakehouse_customers"
+                  "disaggregated": false
                 }
               }
             ],
             "spec": {
               "frame": {
                 "showTitle": true,
-                "title": {
-                  "value": "Total Customers",
-                  "fields": []
-                }
+                "title": "Total Rides"
               },
               "version": 2,
               "widgetType": "counter",
               "encodings": {
                 "value": {
-                  "fieldName": "count",
+                  "fieldName": "count(*)",
                   "rowNumber": 0
                 }
               },
@@ -69,35 +121,32 @@
         },
         {
           "widget": {
-            "name": "total_franchises",
+            "name": "total_revenue",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
+                  "datasetName": "bike_rides",
                   "fields": [
                     {
-                      "name": "count",
-                      "expression": "COUNT(*)"
+                      "name": "sum(ride_revenue)",
+                      "expression": "SUM(`ride_revenue`)"
                     }
                   ],
-                  "disaggregated": false,
-                  "datasetName": "bakehouse_franchises"
+                  "disaggregated": false
                 }
               }
             ],
             "spec": {
               "frame": {
                 "showTitle": true,
-                "title": {
-                  "value": "Total Franchises",
-                  "fields": []
-                }
+                "title": "Total Revenue"
               },
               "version": 2,
               "widgetType": "counter",
               "encodings": {
                 "value": {
-                  "fieldName": "count",
+                  "fieldName": "sum(ride_revenue)",
                   "rowNumber": 0
                 }
               },
@@ -115,35 +164,32 @@
         },
         {
           "widget": {
-            "name": "total_reviews",
+            "name": "total_bikes",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
+                  "datasetName": "bike_bikes",
                   "fields": [
                     {
-                      "name": "count",
-                      "expression": "COUNT(*)"
+                      "name": "countdistinct(bike_id)",
+                      "expression": "COUNT(DISTINCT `bike_id`)"
                     }
                   ],
-                  "disaggregated": false,
-                  "datasetName": "bakehouse_reviews"
+                  "disaggregated": false
                 }
               }
             ],
             "spec": {
               "frame": {
                 "showTitle": true,
-                "title": {
-                  "value": "Total Reviews",
-                  "fields": []
-                }
+                "title": "Total Bikes"
               },
               "version": 2,
               "widgetType": "counter",
               "encodings": {
                 "value": {
-                  "fieldName": "count",
+                  "fieldName": "countdistinct(bike_id)",
                   "rowNumber": 0
                 }
               },
@@ -161,54 +207,51 @@
         },
         {
           "widget": {
-            "name": "customers_by_continent",
+            "name": "rides_by_user_type",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
+                  "datasetName": "bike_rides",
                   "fields": [
                     {
-                      "name": "continent",
-                      "expression": "continent"
+                      "name": "user_type",
+                      "expression": "`user_type`"
                     },
                     {
-                      "name": "count",
-                      "expression": "COUNT(*)"
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
                     }
                   ],
-                  "disaggregated": false,
-                  "datasetName": "bakehouse_customers"
+                  "disaggregated": false
                 }
               }
             ],
             "spec": {
               "frame": {
                 "showTitle": true,
-                "title": {
-                  "value": "Customers by Continent",
-                  "fields": []
-                }
+                "title": "Rides by User Type"
               },
               "version": 3,
               "widgetType": "bar",
               "encodings": {
                 "x": {
-                  "fieldName": "continent",
-                  "displayName": "continent",
+                  "fieldName": "user_type",
+                  "displayName": "user_type",
                   "scale": {
                     "type": "categorical"
                   }
                 },
                 "y": {
-                  "fieldName": "count",
-                  "displayName": "customer_count",
+                  "fieldName": "count(*)",
+                  "displayName": "ride_count",
                   "scale": {
                     "type": "quantitative"
                   }
                 },
                 "color": {
-                  "fieldName": "continent",
-                  "displayName": "continent",
+                  "fieldName": "user_type",
+                  "displayName": "user_type",
                   "scale": {
                     "type": "categorical"
                   }
@@ -228,47 +271,44 @@
         },
         {
           "widget": {
-            "name": "franchises_by_size",
+            "name": "maintenance_status",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
+                  "datasetName": "bike_bikes",
                   "fields": [
                     {
-                      "name": "count",
-                      "expression": "COUNT(*)"
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
                     },
                     {
-                      "name": "size",
-                      "expression": "size"
+                      "name": "requires_maintenance",
+                      "expression": "`requires_maintenance`"
                     }
                   ],
-                  "disaggregated": false,
-                  "datasetName": "bakehouse_franchises"
+                  "disaggregated": false
                 }
               }
             ],
             "spec": {
               "frame": {
                 "showTitle": true,
-                "title": {
-                  "value": "Franchises by Size",
-                  "fields": []
-                }
+                "title": "Maintenance Status"
               },
               "version": 3,
               "widgetType": "pie",
               "encodings": {
                 "angle": {
-                  "fieldName": "count",
+                  "fieldName": "count(*)",
                   "scale": {
                     "type": "quantitative"
                   },
-                  "displayName": "franchise_count"
+                  "displayName": "bike_count"
                 },
                 "color": {
-                  "fieldName": "size",
-                  "displayName": "size",
+                  "fieldName": "requires_maintenance",
+                  "displayName": "requires_maintenance",
                   "scale": {
                     "type": "categorical"
                   }
@@ -288,47 +328,44 @@
         },
         {
           "widget": {
-            "name": "reviews_over_time",
+            "name": "rides_over_time",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
+                  "datasetName": "bike_rides",
                   "fields": [
                     {
-                      "name": "monthly_review_date",
-                      "expression": "DATE_TRUNC('MONTH', review_date)"
+                      "name": "monthly(ride_date)",
+                      "expression": "DATE_TRUNC(\"MONTH\", `ride_date`)"
                     },
                     {
-                      "name": "count",
-                      "expression": "COUNT(*)"
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
                     }
                   ],
-                  "disaggregated": false,
-                  "datasetName": "bakehouse_reviews"
+                  "disaggregated": false
                 }
               }
             ],
             "spec": {
               "frame": {
                 "showTitle": true,
-                "title": {
-                  "value": "Reviews Over Time",
-                  "fields": []
-                }
+                "title": "Rides Over Time"
               },
               "version": 3,
               "widgetType": "line",
               "encodings": {
                 "x": {
-                  "fieldName": "monthly_review_date",
+                  "fieldName": "monthly(ride_date)",
                   "displayName": "Month",
                   "scale": {
                     "type": "temporal"
                   }
                 },
                 "y": {
-                  "fieldName": "count",
-                  "displayName": "review_count",
+                  "fieldName": "count(*)",
+                  "displayName": "ride_count",
                   "scale": {
                     "type": "quantitative"
                   }
@@ -348,61 +385,68 @@
         },
         {
           "widget": {
-            "name": "franchise_table",
+            "name": "station_details",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
+                  "datasetName": "bike_stations",
                   "fields": [
                     {
-                      "name": "franchise_name",
-                      "expression": "franchise_name"
+                      "name": "station_id",
+                      "expression": "`station_id`"
                     },
                     {
-                      "name": "city",
-                      "expression": "city"
+                      "name": "total_rides_as_origin",
+                      "expression": "`total_rides_as_origin`"
                     },
                     {
-                      "name": "district",
-                      "expression": "district"
+                      "name": "total_rides_as_destination",
+                      "expression": "`total_rides_as_destination`"
                     },
                     {
-                      "name": "country",
-                      "expression": "country"
+                      "name": "end_of_day_inventory",
+                      "expression": "`end_of_day_inventory`"
                     },
                     {
-                      "name": "size",
-                      "expression": "size"
+                      "name": "total_revenue_as_origin",
+                      "expression": "`total_revenue_as_origin`"
+                    },
+                    {
+                      "name": "total_revenue_as_destination",
+                      "expression": "`total_revenue_as_destination`"
                     }
                   ],
-                  "disaggregated": true,
-                  "datasetName": "bakehouse_franchises"
+                  "disaggregated": true
                 }
               }
             ],
             "spec": {
               "frame": {
                 "showTitle": true,
-                "title": "Franchise Details"
+                "title": "Station Details"
               },
               "version": 2,
               "widgetType": "table",
               "encodings": {
                 "columns": [
                   {
-                    "fieldName": "franchise_name"
+                    "fieldName": "station_id"
                   },
                   {
-                    "fieldName": "city"
+                    "fieldName": "total_rides_as_origin"
                   },
                   {
-                    "fieldName": "district"
+                    "fieldName": "total_rides_as_destination"
                   },
                   {
-                    "fieldName": "country"
+                    "fieldName": "end_of_day_inventory"
                   },
                   {
-                    "fieldName": "size"
+                    "fieldName": "total_revenue_as_origin"
+                  },
+                  {
+                    "fieldName": "total_revenue_as_destination"
                   }
                 ]
               },
