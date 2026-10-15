@@ -1,22 +1,26 @@
 bundle:
   name: intro-to-bundles
 
-include:
-  - './dashboards/**'
+variables:
+  warehouse_id: 
+    lookup: 
+      warehouse: "Serverless Starter Warehouse"
+  catalog:
+    default: main
+  schema:
+    default: dbdemos_pipeline_bike
 
 resources:    
   dashboards:
-    test-dashboard:
-      display_name: test-dashboard-ha
+    bike_dashboard:
+      display_name: Bike Sharing Analytics
+      file_path: ./dashboards/Bike Sharing Analytics.lvdash.json
       warehouse_id: ${var.warehouse_id}
+      dataset_catalog: ${var.catalog}
+      dataset_schema: ${var.schema}
       permissions:
         - level: CAN_RUN
           group_name: trainees
-
-variables:
-  warehouse_id: 
-    description: Default SQL Warehouse
-    default: 55e74e151b707f52
 
 targets:
   dev:
